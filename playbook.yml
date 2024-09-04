@@ -1,0 +1,20 @@
+---
+- name: Playbook with random execution delay and logging
+  hosts: localhost
+  gather_facts: false
+  tasks:
+
+    - name: Perform step and log every second
+      pause:
+        seconds: 1
+      register: result
+      until: result.stdout.find("all systems go") != -1
+      retries: "{{retries}}"
+      delay: 1
+      ignore_errors: true
+      
+
+    - name: Task completed
+      when: fail_execution
+      fail:
+        msg: "parou"
