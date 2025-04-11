@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Create repository dispatch event
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_APP_TOKEN }}
         run: |
           gh api repos/euprogramador/infra-test/dispatches \
               --raw-field event_type=update-helm-version
