@@ -12,5 +12,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.APP_TOKEN }}
         run: |
-          gh api repos/euprogramador/infra-test/dispatches \
+          gh api repos/teste-gitops/infra-test/dispatches \
               --raw-field event_type=update-helm-version
