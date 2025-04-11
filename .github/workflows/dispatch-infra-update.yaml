@@ -1,23 +1,16 @@
-# .github/workflows/chamar-infra.yaml
-name: Atualizar versão via infra workflow
+name: Notify ghidra-ci
 
 on:
+  push:
   workflow_dispatch:
-    inputs:
-      new_version:
-        required: true
-        type: string
-      chart_path:
-        required: true
-        type: string
-        default: "dev/values.yaml"
 
 jobs:
-  call-infra:
-    uses: euprogramador/infra-test/.github/workflows/reusable-update.yaml@main
-    with:
-      new_version: ${{ inputs.new_version }}
-      chart_path: ${{ inputs.chart_path }}
-    permissions:
-      contents: write
-      pull-requests: write
+  notify:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Create repository dispatch event
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          gh api repos/Lockna/ghidra-ci/dispatches \
+              --raw-field event_type=update-helm-version
