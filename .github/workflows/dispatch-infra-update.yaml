@@ -13,9 +13,12 @@ jobs:
       - uses: actions/create-github-app-token@v1
         id: app-token
         with:
-          # required
-          app-id: ${{ secrets.APP_ID }}
+          app-id: ${{ secret.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: |
+            ansible-test
+            infra-test
       - name: Trigger repository_dispatch using curl
         run: |
           curl -X POST \
