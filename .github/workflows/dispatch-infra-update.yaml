@@ -33,6 +33,15 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
+          #gh api repos/teste-gitops/infra-test/dispatches \
+          #    --raw-field event_type=update-helm-version \
+          #    --raw-field client_payload='{"new_version":"${{ github.event.inputs.new_version }}","chart_path":"clusters/prod/app/Chart.yaml"}'
           gh api repos/teste-gitops/infra-test/dispatches \
-              --raw-field event_type=update-helm-version \
-              --raw-field client_payload='{"new_version":"${{ github.event.inputs.new_version }}","chart_path":"clusters/prod/app/Chart.yaml"}'
+            --raw-field event_type=update-helm-version \
+            --raw-field client_payload="$(cat <<EOF
+          {
+            \"new_version\": \"${{ github.event.inputs.new_version }}\",
+            \"chart_path\": \"clusters/prod/app/Chart.yaml\"
+          }
+          EOF
+          )"
