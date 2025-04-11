@@ -35,4 +35,5 @@ jobs:
         run: |
           gh api repos/teste-gitops/infra-test/dispatches \
             --raw-field event_type=update-helm-version \
-            --raw-field client_payload="{'new_version': '${{ github.event.inputs.new_version }}','chart_path': 'clusters/prod/app/Chart.yaml'}"
+            -F 'payload[new_version]'='${{ github.event.inputs.new_version }}' \
+            -F 'payload[chart_path]'='dev/values.yaml' 
