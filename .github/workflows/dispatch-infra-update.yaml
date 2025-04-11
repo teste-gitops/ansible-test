@@ -7,7 +7,10 @@ on:
       new_version:
         description: 'Nova versão do Chart'
         required: true
-
+permissions:
+  contents: read
+  actions: write   # necessário para enviar o evento
+  
 jobs:
   dispatch:
     runs-on: ubuntu-latest
