@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Create repository dispatch event
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh api repos/Lockna/ghidra-ci/dispatches \
               --raw-field event_type=update-helm-version
