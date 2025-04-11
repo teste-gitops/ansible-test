@@ -1,9 +1,12 @@
 name: Notify ghidra-ci
 
 on:
-  push:
   workflow_dispatch:
-
+    inputs:
+      new_version:
+        description: 'Nova versão'
+        required: true
+        
 jobs:
   notify:
     runs-on: ubuntu-20.04
@@ -19,16 +22,17 @@ jobs:
           repositories: |
             ansible-test
             infra-test
-      - name: Trigger repository_dispatch using curl
-        run: |
-          curl -X POST \
-            -H "Authorization: Bearer ${{ steps.app-token.outputs.token }}" \
-            -H "Accept: application/vnd.github.everest-preview+json" \
-            https://api.github.com/repos/teste-gitops/infra-test/dispatches \
-            -d '{"event_type":"update-helm-version"}'
+      #- name: Trigger repository_dispatch using curl
+      #  run: |
+      #    curl -X POST \
+      #      -H "Authorization: Bearer ${{ steps.app-token.outputs.token }}" \
+      #      -H "Accept: application/vnd.github.everest-preview+json" \
+      #      https://api.github.com/repos/teste-gitops/infra-test/dispatches \
+      #      -d '{"event_type":"update-helm-version"}'
       - name: Create repository dispatch event
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           gh api repos/teste-gitops/infra-test/dispatches \
-              --raw-field event_type=update-helm-version
+              --raw-field event_type=update-helm-version \
+              --raw-field client_payload='{"new_version":"${{ github.event.inputs.new_version }}","chart_path":"clusters/prod/app/Chart.yaml"}'
