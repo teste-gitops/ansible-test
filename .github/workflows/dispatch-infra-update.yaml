@@ -7,13 +7,14 @@ on:
       new_version:
         description: 'Nova versão do Chart'
         required: true
-permissions:
-  contents: read
-  actions: write   # necessário para enviar o evento
+
   
 jobs:
   dispatch:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write   # necessário para enviar o evento
     steps:
       - name: Disparar evento no repositório de infra
         uses: peter-evans/repository-dispatch@v2
