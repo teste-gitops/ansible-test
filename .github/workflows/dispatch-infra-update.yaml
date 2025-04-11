@@ -14,7 +14,7 @@ on:
 
 jobs:
   call-infra:
-    uses: euprogramador/infra-repo/.github/workflows/reusable-update.yaml@main
+    uses: euprogramador/infra-test/.github/workflows/reusable-update.yaml@main
     with:
       new_version: ${{ inputs.new_version }}
       chart_path: ${{ inputs.chart_path }}
