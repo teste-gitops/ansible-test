@@ -12,5 +12,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api repos/Lockna/ghidra-ci/dispatches \
+          gh api repos/euprogramador/infra-test/dispatches \
               --raw-field event_type=update-helm-version
