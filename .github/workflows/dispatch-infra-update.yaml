@@ -1,29 +1,23 @@
-# .github/workflows/dispatch-infra-update.yaml
-name: Enviar atualização de Helm para o repositório de infra
+# .github/workflows/chamar-infra.yaml
+name: Atualizar versão via infra workflow
 
 on:
   workflow_dispatch:
     inputs:
       new_version:
-        description: 'Nova versão do Chart'
         required: true
+        type: string
+      chart_path:
+        required: true
+        type: string
+        default: "dev/values.yaml"
 
-  
 jobs:
-  dispatch:
-    runs-on: ubuntu-latest
+  call-infra:
+    uses: euprogramador/infra-repo/.github/workflows/reusable-update.yaml@main
+    with:
+      new_version: ${{ inputs.new_version }}
+      chart_path: ${{ inputs.chart_path }}
     permissions:
-      contents: read
-      actions: write   # necessário para enviar o evento
-    steps:
-      - name: Disparar evento no repositório de infra
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: euprogramador/infra-test
-          event-type: update-helm-version
-          client-payload: |
-            {
-              "new_version": "${{ github.event.inputs.new_version }}",
-              "chart_path": "dev/values.yaml"
-            }
+      contents: write
+      pull-requests: write
