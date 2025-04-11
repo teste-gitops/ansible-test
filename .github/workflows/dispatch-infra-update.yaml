@@ -35,5 +35,5 @@ jobs:
         run: |
           gh api repos/teste-gitops/infra-test/dispatches \
             --raw-field event_type=update-helm-version \
-            -f new_version='${{ github.event.inputs.new_version }}' \
-            -f chart_path='dev/values.yaml' 
+            --raw-field new_version='${{ github.event.inputs.new_version }}' \
+            --raw-field chart_path='dev/values.yaml' 
