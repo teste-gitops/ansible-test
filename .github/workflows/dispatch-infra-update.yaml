@@ -8,9 +8,16 @@ jobs:
   notify:
     runs-on: ubuntu-20.04
     steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          # required
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          
       - name: Create repository dispatch event
         env:
-          GH_TOKEN: ${{ secrets.APP_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           gh api repos/teste-gitops/infra-test/dispatches \
               --raw-field event_type=update-helm-version
